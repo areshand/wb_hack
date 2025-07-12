@@ -1,0 +1,18 @@
+{
+  "uniswap-v3": {
+    "url": "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
+    "description": "Uniswap V3 pools, swaps, and liquidity data"
+  },
+  "compound-v2": {
+    "url": "https://api.thegraph.com/subgraphs/name/graphprotocol/compound-v2",
+    "description": "Compound lending protocol data"
+  },
+  "aave-v3": {
+    "url": "https://api.thegraph.com/subgraphs/name/aave/aave-v3-ethereum",
+    "description": "Aave V3 lending and borrowing data"
+  },
+  "ens": {
+    "url": "https://api.thegraph.com/subgraphs/name/ensdomains/ens",
+    "description": "Ethereum Name Service domains and registrations"
+  }
+}

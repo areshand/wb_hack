@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "moralis": {
+      "command": "node",
+      "args": ["moralis-mcp-server.js"],
+      "env": {
+        "MORALIS_API_KEY": "${MORALIS_API_KEY}"
+      }
+    }
+  },
+  "endpoints": {
+    "wallet_balance": "https://deep-index.moralis.io/api/v2.2/{address}/balance",
+    "wallet_history": "https://deep-index.moralis.io/api/v2.2/{address}",
+    "contract_logs": "https://deep-index.moralis.io/api/v2.2/{address}/logs",
+    "token_transfers": "https://deep-index.moralis.io/api/v2.2/erc20/{address}/transfers",
+    "nft_transfers": "https://deep-index.moralis.io/api/v2.2/nft/transfers"
+  }
+}

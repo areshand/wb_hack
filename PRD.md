@@ -6,137 +6,197 @@ Perfect. Here’s a structured, developer-friendly PRD broken down so it can be 
 
 🎯 Goal
 
-Build a minimal AI assistant that answers 5 pre-defined blockchain questions using:
-	•	Natural language input
-	•	LLM-based prompt → Moralis API call conversion (via templates or few-shot)
-	•	MCP-wrapped Moralis Web3 API endpoints
-	•	Simple local UI (CLI or Web)
+Build an intelligent AI assistant that translates natural language blockchain questions into real GraphQL queries using:
+	•	Advanced LLM-powered natural language understanding
+	•	Dynamic GraphQL query generation from blockchain schema
+	•	Real-time blockchain data retrieval via multiple APIs (Moralis, The Graph, etc.)
+	•	Intelligent query optimization and result formatting
+	•	Extensible architecture supporting any blockchain question
 
-Target: working demo in 1 day
 
 ⸻
 
-🔍 Use Cases (Fixed)
+🔍 Use Cases (Dynamic & Extensible)
 
-The system will only support the following prompts:
+The system will intelligently handle ANY blockchain-related question by:
 
-ID	Prompt	Expected Output
-1	“What’s the current balance of wallet 0xabc...?”	ETH + ERC-20 balances
-2	“List the last 10 transactions for address 0xabc...”	Table with txn hash, time, value
-3	“Which addresses interacted with contract 0x123... in the past 24 hours?”	Wallet list
-4	“What’s the 24-hour transfer volume of token PEPE?”	Volume in PEPE + USD
-5	“Which wallets received NFTs from 0xcollection... last week?”	Wallet list + token IDs
+**Core Capabilities:**
+- **Wallet Analysis**: Balance queries, transaction history, portfolio analysis
+- **Token Analytics**: Price data, volume analysis, holder distribution, transfer patterns
+- **Contract Intelligence**: Interaction analysis, event logs, function calls, deployment info
+- **NFT Insights**: Collection analytics, ownership tracking, marketplace data, rarity analysis
+- **DeFi Operations**: Liquidity pool data, yield farming metrics, protocol analytics
+- **Cross-chain Analysis**: Multi-chain wallet tracking, bridge transactions, asset flows
 
-These can be implemented via:
-	•	Templated Moralis API calls
-	•	Few-shot prompting
-	•	Static Moralis API documentation knowledge
+**Example Natural Language Inputs (Any Variation Supported):**
+- "What's the current balance of 0x3Cc19ad349C4afC532673CfA4a561517Aa7cfB84?"
+- "Show me the balance for wallet vitalik.eth"
+- "Can you check ethereum.eth balance please?"
+- "List transactions for buterin.eth"
+- "Transaction history of 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+- "Which addresses interacted with the PEPE token contract recently?"
+- "What's the 24-hour transfer volume of token PEPE?"
+- "Show me recent activity for 0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b"
+
+**Implementation Approach:**
+	•	OpenAI GPT-4 powered natural language understanding with fallback pattern matching
+	•	ENS name resolution (vitalik.eth, ethereum.eth, buterin.eth)
+	•	Flexible address detection (39-42 character Ethereum addresses)
+	•	Enhanced API result interpretation with USD estimates and gas fees
+	•	Intelligent query classification and entity extraction
 
 ⸻
 
 🛠️ Components & Implementation Tasks
 
-1. MCP Setup
+1. LLM-Powered Query Understanding Engine
 
-Goal: Serve Moralis Web3 API endpoints via MCP
+Goal: Intelligent natural language processing and intent classification with ENS support
 
 Tasks:
-	•	Set up Moralis Web3 API key and account
-	•	Wrap Moralis REST API endpoints in local MCP config
-	•	Configure MCP server to expose Moralis endpoints for:
-		- Wallet balances (native + ERC-20 tokens)
-		- Transaction history
-		- Contract interactions
-		- Token transfers and volumes
-		- NFT transfers
-	•	Test manual API calls through MCP wrapper
+	•	Implement advanced prompt analysis using OpenAI/Claude APIs
+	•	Create comprehensive blockchain domain knowledge base
+	•	Build intent classification system for different query types:
+		- Wallet analysis, token analytics, contract intelligence, DeFi operations
+	•	Extract entities (addresses, ENS names, tokens, timeframes, metrics) from natural language
+	•	Implement ENS name resolution to Ethereum addresses
+	•	Handle ambiguous queries with clarification prompts
+	•	Support multi-part complex queries requiring data correlation
+	•	Validate and normalize ENS domains (.eth, .xyz, etc.)
 
-Deliverable: mcp-config.json with Moralis API integration + verified endpoints
+Deliverable: intelligent_query_processor.py with LLM integration and ENS resolution
 
 ⸻
 
-2. Prompt → API Call Converter
+2. Dynamic GraphQL Schema & Query Builder
 
-Goal: Convert user prompt to Moralis API calls using templates or prompt chaining
+Goal: Generate real GraphQL queries from natural language understanding
 
 Tasks:
-	•	Define 5 Moralis API endpoint calls (1 per use case):
-		- GET /wallets/{address}/balance (native + ERC-20)
-		- GET /wallets/{address}/history (transaction history)
-		- GET /contracts/{address}/logs (contract interactions)
-		- GET /erc20/{address}/transfers (token volume analysis)
-		- GET /nft/transfers (NFT transfer tracking)
-	•	Create few-shot prompt examples OR static API call templates
-	•	Implement a simple converter (can be if prompt contains + match logic)
-	•	Test LLM generation of API calls against Moralis documentation
+	•	Integrate with The Graph Protocol for decentralized data access
+	•	Implement schema introspection for multiple subgraphs:
+		- Uniswap V2/V3, Compound, Aave, ENS, major NFT collections
+	•	Build dynamic GraphQL query generation based on intent and entities
+	•	Create query optimization engine for efficient data retrieval
+	•	Implement query validation and error handling
+	•	Support complex joins and data aggregation across multiple sources
 
-Deliverable: query_builder.py or convert_prompt(prompt_str) function
+Deliverable: graphql_query_builder.py with schema introspection and dynamic query generation
 
 ⸻
 
-3. Moralis API Query Runner
+3. Multi-API Data Aggregation Layer
 
-Goal: Given an API call, send to Moralis via MCP endpoint and return response
+Goal: Retrieve and correlate data from multiple blockchain APIs
 
 Tasks:
-	•	Implement run_moralis_query(endpoint, params) function
-	•	Handle Moralis API authentication and rate limits
-	•	Handle errors, timeouts, and API response codes
-	•	Parse Moralis JSON responses into clean output format (HTML/markdown table or JSON)
-	•	Format blockchain data (addresses, transaction hashes, token amounts) for readability
+	•	Integrate multiple data sources via MCP:
+		- Moralis Web3 API (real-time data)
+		- The Graph Protocol (indexed historical data)
+		- CoinGecko/CoinMarketCap (price data)
+		- OpenSea API (NFT marketplace data)
+	•	Implement intelligent data source selection based on query requirements
+	•	Build data correlation engine for cross-API result synthesis
+	•	Handle rate limiting, caching, and failover across multiple APIs
+	•	Implement real-time data streaming for live updates
 
-Deliverable: moralis_runner.py
+Deliverable: multi_api_aggregator.py with MCP integration and data correlation
 
 ⸻
 
-4. UI Layer (CLI or Chat UI)
+4. Intelligent Result Synthesis & Formatting
 
-Goal: Let user input prompt and see answer
+Goal: Transform raw blockchain data into meaningful insights with advanced interpretation
 
 Tasks:
-	•	Build a simple CLI or Streamlit app
-	•	Allow typing or pasting a prompt
-	•	Display both output and raw Moralis API call (optional)
-	•	Format results in a readable table
+	•	Build context-aware result formatting based on query intent
+	•	Implement advanced API response interpretation and data normalization
+	•	Create intelligent data parsing for complex blockchain structures (transactions, logs, events)
+	•	Generate human-readable explanations of blockchain data (gas fees, token amounts, timestamps)
+	•	Implement data visualization generation (charts, tables, graphs)
+	•	Create natural language result summaries using LLM with blockchain context
+	•	Support multiple output formats (JSON, markdown, HTML, CSV)
+	•	Add intelligent insights and recommendations based on data patterns
+	•	Implement result caching and incremental updates
+	•	Handle edge cases and error states with meaningful explanations
 
-Deliverable: app.py or streamlit_app.py
+Deliverable: result_synthesizer.py with intelligent formatting, interpretation, and insights
 
 ⸻
 
-5. Demo Script / Testing
+5. Advanced UI with Real-time Capabilities
 
-Goal: Validate demo and ensure smooth flow
+Goal: Interactive blockchain data exploration interface
 
 Tasks:
-	•	Write out a full script: what to type, what to expect
-	•	Hardcode test wallet/contract/token addresses in UI or config
-	•	Validate all 5 use cases give usable, correct responses
-	•	Record 30–60 sec walkthrough video (optional)
+	•	Build modern web interface with real-time updates
+	•	Implement conversational query interface with follow-up questions
+	•	Add query history and saved searches functionality
+	•	Create interactive data visualizations and dashboards
+	•	Support query refinement and drill-down capabilities
+	•	Add export functionality for analysis results
 
-Deliverable: demo.md + test screenshots or screencast
+Deliverable: advanced_web_app.py with real-time features and interactive UI
+
+⸻
+
+6. Comprehensive Testing & Validation
+
+Goal: Ensure accuracy and reliability across diverse blockchain queries
+
+Tasks:
+	•	Create extensive test suite covering all blockchain domains
+	•	Implement automated query validation against known results
+	•	Build performance benchmarking for query response times
+	•	Create stress testing for high-volume query scenarios
+	•	Validate data accuracy across multiple API sources
+	•	Document edge cases and error handling scenarios
+
+Deliverable: comprehensive test suite and validation framework
 
 ⸻
 
 📦 File Structure Proposal
 
-/blockchain-ai-demo
-├── app.py                 # Main UI or CLI app
-├── mcp-config.json        # Moralis API MCP wrapper config
-├── query_builder.py       # Prompt to Moralis API call conversion
-├── moralis_runner.py      # Sends API calls to Moralis and returns parsed result
-├── demo.md                # Scripted demo instructions
-├── requirements.txt       # deps (e.g., openai, requests, streamlit, moralis)
-└── README.md              # Brief intro + how to run
+/blockchain-ai-assistant
+├── src/
+│   ├── __init__.py
+│   ├── intelligent_query_processor.py    # LLM-powered natural language understanding
+│   ├── graphql_query_builder.py         # Dynamic GraphQL query generation
+│   ├── multi_api_aggregator.py          # Multi-source data aggregation via MCP
+│   ├── result_synthesizer.py            # Intelligent result formatting and insights
+│   ├── advanced_web_app.py              # Modern web interface with real-time features
+│   ├── blockchain_schema_manager.py     # Schema introspection and management
+│   └── data_correlation_engine.py       # Cross-API data correlation and synthesis
+├── config/
+│   ├── mcp-config.json                  # Multi-API MCP server configurations
+│   ├── subgraph-endpoints.json          # The Graph Protocol subgraph endpoints
+│   └── api-keys.env                     # API keys for various services
+├── tests/
+│   ├── test_query_processor.py          # LLM query understanding tests
+│   ├── test_graphql_builder.py          # GraphQL generation tests
+│   ├── test_data_aggregation.py         # Multi-API integration tests
+│   └── test_end_to_end.py               # Complete workflow tests
+├── examples/
+│   ├── sample_queries.md                # Example natural language queries
+│   └── expected_outputs.json            # Expected results for validation
+├── requirements.txt                     # Enhanced dependencies (openai, graphql-core, etc.)
+├── docker-compose.yml                   # Local development environment
+├── demo.md                              # Comprehensive demo script
+└── README.md                            # Setup and usage instructions
 
 
 ⸻
 
 ✅ Success Criteria
-	•	All 5 prompts produce correct live responses using Moralis Web3 API
-	•	Each Moralis API call goes through MCP server
-	•	Blockchain data (balances, transactions, contracts) is accurately retrieved and formatted
-	•	Answers are formatted clearly in CLI or web interface
-	•	Demo is reproducible from local setup with Moralis API key
+	•	System handles ANY blockchain question with intelligent understanding
+	•	Natural language queries are accurately translated to optimized GraphQL
+	•	Real-time data retrieval from multiple APIs via MCP integration
+	•	Intelligent result synthesis with contextual insights and visualizations
+	•	Sub-second response times for common queries with proper caching
+	•	Extensible architecture supporting new blockchain protocols and APIs
+	•	Comprehensive error handling and graceful degradation
+	•	Production-ready scalability and reliability
 
 ⸻
 
